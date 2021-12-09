@@ -35,19 +35,21 @@ const Entries = () => {
   const displayEntries = [];
   entries?.map((element, index) => {
     displayEntries.push(
-      <tr className="tableCell">
-        <td className="tableCell">{element?.urlentry}</td> {/* need to update to .urlentry to match backend */}
-        {/* <td className="tableCell">{element?.username}</td> */}
-        {/* <td className="tableCell">{element?.entry_password}</td> */}
-        <td className="tableCell">
-          <PasswordEntry 
-            entryPassword={element?.passwordentry} 
-            setEntries={setEntries}
-            entryURL={element?.urlentry}
-            entryUserName={element?.username}
-            userID={userID}/>
-        </td>
-      </tr>
+      <tbody className="tableBody">
+        <tr>
+          <td className="tableCell">{element?.urlentry}</td> {/* need to update to .urlentry to match backend */}
+          {/* <td className="tableCell">{element?.username}</td> */}
+          {/* <td className="tableCell">{element?.entry_password}</td> */}
+          <td className="tableCell">
+            <PasswordEntry 
+              entryPassword={element?.passwordentry} 
+              setEntries={setEntries}
+              entryURL={element?.urlentry}
+              entryUserName={element?.username}
+              userID={userID}/>
+          </td>
+        </tr>
+      </tbody>
     );
   });
   return (
@@ -80,7 +82,7 @@ const Entries = () => {
             value={entryPassword}
             onChange={(e) => setEntryPassword(e.target.value)}/>
         </label>
-      <input type="submit" value="Save">
+      <input type="submit" value="Save" className="entrybtn">
       </input>
       </form>
 
@@ -104,12 +106,11 @@ const Entries = () => {
       </button> */}
 
       {entries.length > 0 && (
-        <table>
-          <tr className="tableCell">
-            <td className="tableCell">URL</td>
-            <td className="tableCell">Username</td>
-            <td className="tableCell">Passwords</td>
-          </tr>
+        <table className='tableContainer'>
+          <thead className="tableHead">
+            <th>URL</th>
+            <th>&nbsp;&nbsp;&nbsp;&nbsp;Username&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password</th>
+          </thead>
 
           {displayEntries}
         </table>

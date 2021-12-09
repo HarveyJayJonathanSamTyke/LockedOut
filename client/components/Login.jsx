@@ -31,7 +31,7 @@ const Login = () => {
   return (
     <div>
       {!userLoggedIn && (
-        <div className="loginPage">
+        <div>
           <img
             style={{ marginTop: "3px", height: "4em", width: "4em" }}
             src="pinkFairyArmidallo.png"
