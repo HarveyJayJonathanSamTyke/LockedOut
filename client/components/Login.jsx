@@ -34,13 +34,13 @@ const Login = () => {
       {!userLoggedIn && (
         <div>
           <img
-            style={{ marginTop: "3px", height: "4em", width: "4em" }}
-            src="pinkFairyArmidallo.png"
-            alt="Badass Armored PFA"
+            src="lockedout.png"
+            alt="Lockedout"
+            id="lockedoutlogo"
           />
-          <h2 style={{ marginTop: "3px", marginLeft: "10px" }}>Login</h2>
+          <h2 style={{ marginTop: "3px", marginLeft: "105px" }}>Login</h2>
           <input
-            style={{ marginTop: "3px", marginLeft: "10px"}}
+            style={{ marginTop: "1px", marginLeft: "10px"}}
             className="form-group"
             placeholder="Username"
             name="username"
