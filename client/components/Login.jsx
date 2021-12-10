@@ -10,6 +10,7 @@ const Login = () => {
   const [passwordState, setPasswordState] = useState('password');
 
   const handleUserFetch = (data) => {
+    console.log('THIS IS THE DATA.USERID: ', data.userID);
     setUserLoggedIn(data.userExists);
     store.dispatch({
       type: "ADD_USER_ID",
