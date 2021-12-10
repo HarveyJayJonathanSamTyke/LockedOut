@@ -7,8 +7,6 @@ const Dashboard = () => {
   let userIdFromState = useSelector((state) => state);
   return (
     <div>
-      <h3>Dashboard</h3>
-      <hr></hr>
       <label>User ID:</label>
       <span>{userIdFromState.userID}</span>
       <br /> <br />

@@ -70,13 +70,8 @@ const PasswordEntry = (props) => {
         ></input>
 
         {/* reveal button */}
-        <button
-          style={{
-            borderRadius: "18px",
-            height: "20px",
-            width: "50px",
-            fontSize: "10px",
-          }}
+        <button className="entrybtn"
+  
           onClick={() =>
             setPasswordType(passwordType === "password" ? "text" : "password")
           }
@@ -85,13 +80,8 @@ const PasswordEntry = (props) => {
         </button>
 
         {/* edit button */}
-        <button
-          style={{
-            borderRadius: "18px",
-            height: "20px",
-            width: "50px",
-            fontSize: "10px",
-          }}
+        <button className="entrybtn"
+          
           onClick={() =>
             handleEditEntries()
           }
@@ -100,13 +90,8 @@ const PasswordEntry = (props) => {
         </button>
 
         {/* delete button */}
-        <button
-          style={{
-            borderRadius: "18px",
-            height: "20px",
-            width: "50px",
-            fontSize: "10px",
-          }}
+        <button className="entrybtn"
+          
           onClick={() =>
             handleDeleteEntries()
           }
@@ -117,4 +102,4 @@ const PasswordEntry = (props) => {
     );
 };
 
-export default PasswordEntry
+export default PasswordEntry;
