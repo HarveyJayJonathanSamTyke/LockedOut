@@ -13,6 +13,7 @@ module.exports = {
   },
   plugins: [new HtmlWebpackPlugin({ template: "index.html" })],
   module: {
+    testEnvironment: "node",
     rules: [
       {
         test: /\.jsx?/,
