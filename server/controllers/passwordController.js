@@ -3,34 +3,83 @@ const db = require("../models/passwordModel");
 const passwordController = {};
 
 passwordController.getLogin = (req, res, next) => {
-  const queryGetLogin = "SELECT * FROM users";
-  db.query(queryGetLogin).then((rset) => {
-    res.locals.userMetaData = {
-      userExists: false,
-      userAdded: false,
-      userID: null,
-    };
-    for (let i = 0; i < rset.rowCount; i++) {
-      if (
-        req.query.username === rset.rows[i].username &&
-        req.query.passwordUser === rset.rows[i].password
-      ) {
+  facebookid=[req.query.id]
+  // console.log(req.query.id);
+  // console.log('line 7 in pwcontrol', facebookid);
+  const queryGetLogin = "SELECT * FROM oauth WHERE facebookid=$1;";
+  // console.log('get login query', queryGetLogin)
+  db.query(queryGetLogin, facebookid)
+    .then((result) => {
+      // console.log('this is the result of dbquery', result);
+      res.locals.userMetaData = {
+        userExists: false,
+        // userAdded: false,
+        userID: null,
+      };
+
+      // if user exists, then return userMetaData with userExists = true & userID
+      if (result.rows.length > 0) {
         res.locals.userMetaData = {
           userExists: true,
-          userAdded: false,
-          userID: rset.rows[i]._id,
+          // userAdded: false,
+          userID: result.rows[0]._id,
+          name: result.rows[0].name
         };
-
-        res.locals.currentUserID = rset.rows[i]._id;
         return next();
       }
-    }
-    return next();
-  });
+      // if user doesn't exist, then create another user (insert query to database)
+      else {
+
+        const values = [req.query.id, req.query.name, req.query.pictureurl]
+        // console.log('this is line 34 create new user values:', values);
+        const queryInsertUser = "INSERT INTO oauth (facebookid, name, pictureurl) VALUES($1, $2, $3) RETURNING _id;";
+        db.query(queryInsertUser, values)
+          .then(result => {
+            // console.log(`this is insert result`, result);
+            res.locals.userMetaData = {
+              userExists: true,
+              // userAdded: false,
+              userID: result.rows[0]._id,
+              // name: result.rows[0].name
+            };
+            return next();
+          })
+          .catch(error => {
+            return next({
+            log: 'Error in db.queryInsertUse',
+            status: 400,
+            message: { err: 'Error in db.queryInsertUse' },
+          })})
+      }
+        // console.log result just to see if we need to do some sort of error handling
+        // if successful, return userExists = true & userID
+
+      // for (let i = 0; i < result.rowCount; i++) {
+      //   if (
+      //     req.query.id === result.rows[i].facebookid &&
+      //     req.query.name === result.rows[i].name
+      //   ) {
+      //     res.locals.userMetaData = {
+      //       userExists: true,
+      //       userAdded: false,
+      //       userID: result.rows[i]._id,
+      //     };
+
+      //     res.locals.currentUserID = result.rows[i]._id;
+      //     return next();
+      //   }
+      // }
+      return next();
+    })
+    .catch(error => {return next({
+      log: 'Error in db.queryGetLogin',
+      status: 400,
+      message: { err: 'Error in db.queryGetLogin' },
+    })})
 };
 
 passwordController.getTotalUsers = (req, res, next) => {
-  const queryGetTotal = "SELECT COUNT(username) FROM users";
+  const queryGetTotal = "SELECT COUNT(username) FROM oauth";
   db.query(queryGetTotal).then((rset) => {
     res.locals.totalUsers = Number(rset.rows[0].count);
     return next();
@@ -39,10 +88,9 @@ passwordController.getTotalUsers = (req, res, next) => {
 
 passwordController.getSignup = (req, res, next) => {
   const currID = Number(res.locals.totalUsers) + 1;
-  const values = [currID, req.query.username, req.query.passwordUser];
+  const values = [currID, req.query.id, req.query.name, req.query.pictureurl];
   const queryInsertUser =
-    "INSERT INTO users (_id, username, password) VALUES($1, $2, $3);";
-
+    "INSERT INTO oauth (_id, facebookid, name, pictureurl) VALUES($1, $2, $3);";
   if (!!res.locals.userMetaData.userExists) {
     return next();
   } else if (!res.locals.userMetaData.userExists) {
@@ -71,14 +119,12 @@ passwordController.getAllEntries = (req, res, next) => {
 passwordController.addEntry = (req, res, next) => {
 
   const values = [
-    // we need to add another property "userName"
     req.query.urlEntry,
     req.query.userName,
     req.query.userID,
     req.query.passwordEntry,
   ];
   const queryInsertUser =
-    // we need
     "INSERT INTO entry (urlentry, username, userid, passwordentry) VALUES($1, $2, $3, $4) RETURNING *;";
   db.query(queryInsertUser, values, (rset) => {
     res.locals.entryAdded = true;
