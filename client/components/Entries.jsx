@@ -36,7 +36,7 @@ const Entries = () => {
   const displayEntries = [];
   entries.map((element, index) => {
     displayEntries.push(
-      <tr className="tableCell">
+      <tbody className="tableCell">
         <td className="tableCell">{element.urlentry}</td> 
         {/* need to update to .urlentry to match backend */}
         {/* <td className="tableCell">{element.username}</td>
@@ -50,7 +50,7 @@ const Entries = () => {
             userID={userID}
             />
         </td>
-      </tr>
+      </tbody>
     );
   });
   console.log(`this is Entries`, entries);
@@ -58,7 +58,7 @@ const Entries = () => {
   return (
     // from lines 45-56, create new entries field
     <>
-      <form onSubmit={(event) => {
+      <form id='inputForm' onSubmit={(event) => {
         event.preventDefault();
         handleSaveEntries()
       }}>
@@ -70,6 +70,7 @@ const Entries = () => {
             onChange={(e) => setEntryURL(e.target.value)} />
           {/* we technically don't need onChange for URL because we're not doing anything with it */}
         </label>
+        &nbsp;&nbsp;
         <label>Username
           <input
             required='required'
@@ -85,7 +86,7 @@ const Entries = () => {
             value={entryPassword}
             onChange={(e) => setEntryPassword(e.target.value)} />
         </label>
-        <input type="submit" value="Save">
+        <input type="submit" value="Save" className='entrybtn'>
         </input>
       </form>
 
@@ -96,11 +97,10 @@ const Entries = () => {
 
       {entries.length > 0 && (
         <table>
-          <tr className="tableCell">
-            <td className="tableCell">URL</td>
-            <td className="tableCell">Username</td>
-            <td className="tableCell">Passwords</td>
-          </tr>
+          <thead className="tableCell">
+            <th>URL</th>
+            <th>&nbsp;&nbsp;&nbsp;&nbsp;Username&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password</th>
+          </thead>
           {displayEntries}
 
         </table>

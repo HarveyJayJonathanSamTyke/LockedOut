@@ -72,6 +72,11 @@ const Login = () => {
 
   return (
     <div class="container">
+            <img 
+            src="lockedout.png"
+            alt="Lockedout"
+            id="lockedoutlogo"
+          />
       <Card style={{ width: '600px' }}>
         <Card.Header>
           {!login &&
